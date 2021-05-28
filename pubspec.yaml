@@ -30,7 +30,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.3
   english_words: ^4.0.0-0
-  flutter_speed_dial: ^3.0.5
+  flutter_speed_dial: ^3.0.5      
+  #spotify: ^0.5.1
+  webview_flutter: ^2.0.7
+  audio_manager: ^0.7.3
+  flutter_audio_query: ^0.3.5+6
+  spotify_sdk: ^2.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

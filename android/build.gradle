@@ -11,11 +11,14 @@ buildscript {
     }
 }
 
+
 allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
+   repositories {
+      jcenter()
+      flatDir {
+        dirs 'libs'
+      }
+   }
 }
 
 rootProject.buildDir = '../build'

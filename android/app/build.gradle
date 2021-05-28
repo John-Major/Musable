@@ -35,7 +35,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.flutterproject1"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -49,6 +49,14 @@ android {
         }
     }
 }
+//allprojects {
+//   repositories {
+//      jcenter()
+//      flatDir {
+//        dirs 'libs'
+//      }
+//   }
+//}
 
 flutter {
     source '../..'
@@ -56,4 +64,12 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation files('C:\\Users\\Beati\\Documents\\flutter_projects\\Musable\\License\\authlibrary\\spotify-app-remote-release-0.7.1.aar')
+//    implementation files('C:\\Users\\Beati\\Documents\\flutter_projects\\Musable\\License\\remote\\spotify-app-remote-release-0.7.1.aar')
+//    implementation files('C:\\Users\\Beati\\Documents\\flutter_projects\\Musable\\License\\authlibrary\\spotify-auth-release-1.2.3.aar')
+    // compile project(name ':spotify-app-remote-release-0.7.1', ext: 'aar')
+    // compile project(name:'spotify-auth-release-1.2.3', ext: 'aar')
+    // implementation project(':spotify-app-remote')
+    // implementation project(':spotify-auth-release')
+    // implementation "com.google.code.gson:gson:2.8.5"
 }
