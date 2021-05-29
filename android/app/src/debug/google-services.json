@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "199834915409",
+    "project_id": "musable-c4315",
+    "storage_bucket": "musable-c4315.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199834915409:android:02d8411d4acd9da75a5e70",
+        "android_client_info": {
+          "package_name": "com.example.flutterproject1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199834915409-f7ih1tv6lviejf1t5evt33gtiu7skbc5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcvaHbwQIq7IEuiySwE9SPeU_pEO70Tt0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199834915409-f7ih1tv6lviejf1t5evt33gtiu7skbc5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
