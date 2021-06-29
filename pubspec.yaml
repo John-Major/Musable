@@ -37,6 +37,14 @@ dependencies:
   #flutter_audio_query: ^0.3.5+6
   spotify_sdk: ^2.1.0
   firebase_auth: ^1.2.0
+  cloud_firestore: ^2.2.2
+  #firebase_core : ^1.2.1
+  http: ^0.13.3
+  convert: ^3.0.0
+  bloc: ^7.0.0
+  flutter_bloc: ^7.0.0
+  shared_preferences: ^2.0.6
+  provider: ^5.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

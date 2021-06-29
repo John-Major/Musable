@@ -5,6 +5,8 @@ class AuthMethods {
 
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
+      print("the email im logging in with is $email");
+      print("the password im logging in with is $password");
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User fireBaseUser = result.user;
@@ -14,10 +16,13 @@ class AuthMethods {
     }
   }
 
-  Future signUpWithEmailAndPassword(String email, String password) async {
+  Future signUpWithEmailAndPassword(
+      String email, String password, String userName) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      print('response is ${result.user}');
+      await result.user.updateProfile(displayName: userName);
       User fireBaseUser = result.user;
       return fireBaseUser != null ? fireBaseUser.uid : null;
     } catch (e) {

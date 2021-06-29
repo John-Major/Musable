@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutterproject1/features/network_finding_page/search.dart';
 import 'package:flutterproject1/widgets.dart';
 
+import 'features/chat_room_page/chat_room_page.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class MyStatefulWidget extends StatefulWidget {
@@ -16,22 +18,45 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       _selectedIndex = index;
     });
   }
-  Widget _buildScreen(int index){
-      switch (index) {
-        case 0:
-          return BackgroundHomePage();
-          break;
-        default: return Center(child: Text("Error 404. Page not found"),);
-      }
-  }
-  Text _buildTitle(int index){
+
+  Widget _buildScreen(int index) {
     switch (index) {
-        case 0:
-          return Text("Home Page");
-          break;
-        default: return Text("me no know");
-      }
+      case 0:
+        return BackgroundHomePage();
+        break;
+      case 1:
+        return ChatRoom();
+        break;
+      case 2:
+        return Search();
+        break;
+      case 3:
+        return Center(
+            child: Text("This will be the page for the settings room"));
+        break;
+      default:
+        return Center(
+          child: Text("Error 404. Page not found"),
+        );
+    }
   }
+
+  Text _buildTitle(int index) {
+    switch (index) {
+      case 0:
+        return Text("Home Page");
+        break;
+      case 1:
+        return Text("Chat Page");
+      case 2:
+        return Text("Networking Page");
+      case 3:
+        return Text("Settings Page");
+      default:
+        return Text("Different Page");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

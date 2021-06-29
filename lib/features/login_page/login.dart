@@ -1,11 +1,71 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterproject1/application.dart';
+import 'package:flutterproject1/core/services/auth.dart';
+import 'package:flutterproject1/core/services/database.dart';
+import 'package:flutterproject1/core/widgets/text_style.dart';
+import 'package:flutterproject1/features/login_page/sign_up.dart';
+import 'package:flutterproject1/helper/helper_functions.dart';
 
 class SignIn extends StatefulWidget {
+  final Function toggle;
+
+  SignIn(this.toggle);
+
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
+  final formKey = GlobalKey<FormState>();
+  bool isLoading = false;
+  QuerySnapshot snapshotUserInfo;
+
+  AuthMethods authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
+  TextEditingController emailTextEditController = new TextEditingController();
+  TextEditingController passwordTextEditController =
+      new TextEditingController();
+
+  void signIn() async {
+    if (formKey.currentState.validate()) {
+      HelperFunctions.saveUserEmailSharedPreference(
+          emailTextEditController.text.trim());
+
+      print("should print1");
+      databaseMethods
+          .getUserInfo(emailTextEditController.text.trim())
+          .then((val) {
+        print('should print here');
+        snapshotUserInfo = val;
+        HelperFunctions.saveUserNameSharedPreference("naruza");
+        //snapshotUserInfo.docs.elementAt(0).get('name')
+        print("should print");
+        setState(() {
+          isLoading = true;
+        });
+      });
+      print("the email is: ${emailTextEditController.text.trim()}");
+      print("the password is: ${passwordTextEditController.text.trim()}");
+      await authMethods
+          .signInWithEmailAndPassword(emailTextEditController.text.trim(),
+              passwordTextEditController.text.trim())
+          .catchError((onError) {
+        print("THE ERROR IS" + onError.toString());
+      })
+          //emailTextEditController.text, passwordTextEditController.text
+          .then((val) {
+        if (val != null) {
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MyStatefulWidget()));
+        } else {
+          print("gg");
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,13 +82,39 @@ class _SignInState extends State<SignIn> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextField(
-                  style: customTextStyle(Colors.white, 16),
-                  decoration: textFieldInputDecoration("email"),
-                ),
-                TextField(
-                  style: customTextStyle(Colors.white, 16),
-                  decoration: textFieldInputDecoration("password"),
+                Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        validator: (val) {
+                          return val.isEmpty ? "Field is Empty" : null;
+                        },
+
+                        /*
+validator: (val) {
+                          return RegExp(
+                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(val)
+                              ? null
+                              : "Enter correct email";
+                        },
+                        */
+
+                        controller: emailTextEditController,
+                        style: customTextStyle(Colors.white, 16),
+                        decoration: textFieldInputDecoration("email"),
+                      ),
+                      TextFormField(
+                        validator: (val) {
+                          return val.isEmpty ? "Field is Empty" : null;
+                        },
+                        controller: passwordTextEditController,
+                        style: customTextStyle(Colors.white, 16),
+                        decoration: textFieldInputDecoration("password"),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 8,
@@ -44,18 +130,23 @@ class _SignInState extends State<SignIn> {
                 SizedBox(
                   height: 16,
                 ),
-                Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        const Color(0xff007EF4),
-                        const Color(0xff2A75BC)
-                      ]),
-                      borderRadius: BorderRadius.circular(30)),
-                  child:
-                      Text("Sign In", style: customTextStyle(Colors.white, 17)),
+                GestureDetector(
+                  onTap: () {
+                    signIn();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                          const Color(0xff007EF4),
+                          const Color(0xff2A75BC)
+                        ]),
+                        borderRadius: BorderRadius.circular(30)),
+                    child: Text("Sign In",
+                        style: customTextStyle(Colors.white, 17)),
+                  ),
                 ),
                 SizedBox(
                   height: 16,
@@ -78,11 +169,18 @@ class _SignInState extends State<SignIn> {
                   children: [
                     Text("Don't have an account?",
                         style: customTextStyle(Colors.white, 12)),
-                    Text(" Register now",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            decoration: TextDecoration.underline)),
+                    GestureDetector(
+                      onTap: () {
+                        widget.toggle();
+                      },
+                      child: Container(
+                        child: Text(" Register now",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                decoration: TextDecoration.underline)),
+                      ),
+                    ),
                   ],
                 ),
                 SizedBox(
@@ -104,18 +202,4 @@ Widget customAppBar(BuildContext context) {
   return AppBar(
     title: Text("Custom App Bar"),
   );
-}
-
-InputDecoration textFieldInputDecoration(String hintText) {
-  return InputDecoration(
-      hintText: hintText,
-      hintStyle: TextStyle(color: Colors.white54),
-      focusedBorder:
-          UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-      enabledBorder:
-          UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)));
-}
-
-TextStyle customTextStyle(Color color, double fontSize) {
-  return TextStyle(color: color, fontSize: fontSize);
 }
